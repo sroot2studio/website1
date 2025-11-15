@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初中数学练习题 - √2工作室</title>
+    <!-- 引入Math.js库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #3498db;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #3498db;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* 标题区域 */
+        .header-section {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .header-section p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .exercise-container {
+            flex: 2;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .instructions {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .instructions ul {
+            list-style-type: none;
+            margin-bottom: 30px;
+        }
+        
+        .instructions li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions li:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* 题目区域样式 */
+        .question-container {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            min-height: 60px;
+            font-family: "Times New Roman", serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .math-img {
+            height: 40px;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+        
+        .answer-display {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 15px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 0 auto 15px;
+            display: block;
+            background-color: #fff;
+            min-height: 50px;
+            font-family: "Times New Roman", serif;
+        }
+        
+        /* 输入面板样式 */
+        .input-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .input-btn {
+            padding: 12px 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Times New Roman", serif;
+        }
+        
+        .input-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .input-btn.number {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .input-btn.operator {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .input-btn.special {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .input-btn.function {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .input-btn.clear {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #2c3e50;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1a252f;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        /* 结果区域 */
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        
+        .score-item {
+            text-align: center;
+        }
+        
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .copyright {
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .header-section h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.5rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .input-panel {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">√2<span>工作室</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="index.html#about">关于我们</a></li>
+                    <li><a href="index.html#services">服务</a></li>
+                    <li><a href="index.html#portfolio">作品</a></li>
+                    <li><a href="index.html#team">团队</a></li>
+                    <li><a href="index.html#contact">联系</a></li>
+                    <li><a href="calculator.html">计算器</a></li>
+                    <li><a href="math-exercises.html" style="color: #3498db;">数学练习</a></li>
+                </ul>
+                <div class="mobile-menu">☰</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 标题区域 -->
+    <section class="header-section">
+        <div class="container">
+            <h1>初中数学练习题</h1>
+            <p>练习包含整数、分数和根号的四则运算，提升数学能力</p>
+        </div>
+    </section>
+
+    <!-- 主内容区域 -->
+    <div class="container">
+        <div class="main-content">
+            <div class="exercise-container">
+                <div class="question-container">
+                    <div class="question" id="question">点击"生成题目"开始练习</div>
+                    <div class="answer-display" id="answerDisplay"></div>
+                    
+                    <div class="input-panel">
+                        <button class="input-btn number" data-value="7">7</button>
+                        <button class="input-btn number" data-value="8">8</button>
+                        <button class="input-btn number" data-value="9">9</button>
+                        <button class="input-btn clear" data-action="clear">C</button>
+                        
+                        <button class="input-btn number" data-value="4">4</button>
+                        <button class="input-btn number" data-value="5">5</button>
+                        <button class="input-btn number" data-value="6">6</button>
+                        <button class="input-btn operator" data-value="+">+</button>
+                        
+                        <button class="input-btn number" data-value="1">1</button>
+                        <button class="input-btn number" data-value="2">2</button>
+                        <button class="input-btn number" data-value="3">3</button>
+                        <button class="input-btn operator" data-value="-">-</button>
+                        
+                        <button class="input-btn number" data-value="0">0</button>
+                        <button class="input-btn operator" data-value="×">×</button>
+                        <button class="input-btn operator" data-value="÷">÷</button>
+                        <button class="input-btn clear" data-action="backspace">⌫</button>
+                        
+                        <button class="input-btn function" data-action="fraction">分数</button>
+                        <button class="input-btn function" data-action="sqrt">√</button>
+                        <button class="input-btn function" data-action="parenthesis" data-value="(">(</button>
+                        <button class="input-btn function" data-action="parenthesis" data-value=")">)</button>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn btn-primary" id="generateBtn">生成题目</button>
+                    <button class="btn btn-success" id="submitBtn">提交答案</button>
+                    <button class="btn btn-secondary" id="resetBtn">重置分数</button>
+                </div>
+                
+                <div class="result" id="result"></div>
+                
+                <div class="score-container">
+                    <div class="score-item">
+                        <div class="score-label">正确</div>
+                        <div class="score-value" id="correctCount">0</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">错误</div>
+                        <div class="score-value" id="incorrectCount">0</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">正确率</div>
+                        <div class="score-value" id="accuracy">0%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h2>使用说明</h2>
+                <ul>
+                    <li>点击"生成题目"按钮生成新的数学题目</li>
+                    <li>使用下方按钮输入答案</li>
+                    <li>点击"提交答案"按钮检查答案是否正确</li>
+                    <li>系统会自动统计您的正确率和错误次数</li>
+                    <li>点击"重置分数"按钮可以重置统计信息</li>
+                </ul>
+                
+                <h2>输入说明</h2>
+                <ul>
+                    <li>使用数字按钮输入数字</li>
+                    <li>使用运算符按钮输入运算符号</li>
+                    <li>使用"分数"按钮输入分数</li>
+                    <li>使用"√"按钮输入根号</li>
+                    <li>使用"("和")"按钮输入括号</li>
+                    <li>使用"C"按钮清空答案</li>
+                    <li>使用"⌫"按钮删除最后一个字符</li>
+                </ul>
+                
+                <h2>题目类型</h2>
+                <ul>
+                    <li>整数四则运算</li>
+                    <li>分数运算</li>
+                    <li>带根号的数运算</li>
+                    <li>混合运算（最多4个数）</li>
+                    <li>平方和开方运算</li>
+                </ul>
+                
+                <h2>注意事项</h2>
+                <ul>
+                    <li>答案必须是最简形式</li>
+                    <li>分数必须化简</li>
+                    <li>根号必须化简</li>
+                    <li>不能直接照抄原表达式</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2023 √2工作室 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 数学练习题生成器
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionElement = document.getElementById('question');
+            const answerDisplay = document.getElementById('answerDisplay');
+            const resultElement = document.getElementById('result');
+            const generateBtn = document.getElementById('generateBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const correctCountElement = document.getElementById('correctCount');
+            const incorrectCountElement = document.getElementById('incorrectCount');
+            const accuracyElement = document.getElementById('accuracy');
+            const inputButtons = document.querySelectorAll('.input-btn');
+            
+            let currentQuestion = '';
+            let correctAnswer = '';
+            let userAnswer = '';
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let totalQuestions = 0;
+            let isFractionMode = false;
+            let fractionParts = { numerator: '', denominator: '' };
+            
+            // 分数图片映射
+            const fractionImages = {
+                '1/2': 'https://via.placeholder.com/60x40/ffffff/000000?text=½',
+                '1/3': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅓',
+                '2/3': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅔',
+                '1/4': 'https://via.placeholder.com/60x40/ffffff/000000?text=¼',
+                '3/4': 'https://via.placeholder.com/60x40/ffffff/000000?text=¾',
+                '1/5': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅕',
+                '2/5': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅖',
+                '3/5': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅗',
+                '4/5': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅘',
+                '1/6': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅙',
+                '5/6': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅚',
+                '1/8': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅛',
+                '3/8': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅜',
+                '5/8': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅝',
+                '7/8': 'https://via.placeholder.com/60x40/ffffff/000000?text=⅞'
+            };
+            
+            // 根号图片映射
+            const sqrtImages = {
+                '√2': 'https://via.placeholder.com/60x40/ffffff/000000?text=√2',
+                '√3': 'https://via.placeholder.com/60x40/ffffff/000000?text=√3',
+                '√5': 'https://via.placeholder.com/60x40/ffffff/000000?text=√5',
+                '√6': 'https://via.placeholder.com/60x40/ffffff/000000?text=√6',
+                '√7': 'https://via.placeholder.com/60x40/ffffff/000000?text=√7',
+                '√8': 'https://via.placeholder.com/60x40/ffffff/000000?text=√8',
+                '√10': 'https://via.placeholder.com/60x40/ffffff/000000?text=√10'
+            };
+            
+            // 生成随机整数
+            function randomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            // 生成随机分数
+            function randomFraction() {
+                const numerator = randomInt(1, 9);
+                const denominator = randomInt(2, 9);
+                // 确保分数是最简形式
+                const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+                const divisor = gcd(numerator, denominator);
+                return {
+                    numerator: numerator / divisor,
+                    denominator: denominator / divisor
+                };
+            }
+            
+            // 生成带根号的数
+            function randomSqrt() {
+                const radicands = [2, 3, 5, 6, 7, 8, 10];
+                const radicand = radicands[randomInt(0, radicands.length - 1)];
+                return `√${radicand}`;
+            }
+            
+            // 检查表达式是否可以化简
+            function canSimplify(expression) {
+                try {
+                    const result = math.evaluate(expression);
+                    // 如果结果是整数或分数，且不是原表达式，则认为可以化简
+                    return math.isInteger(result) || math.isFraction(result);
+                } catch (error) {
+                    return false;
+                }
+            }
+            
+            // 生成数学表达式
+            function generateExpression() {
+                const numCount = randomInt(2, 4); // 2到4个数
+                const numbers = [];
+                const numberTypes = ['integer', 'fraction', 'sqrt'];
+                
+                for (let i = 0; i < numCount; i++) {
+                    const type = numberTypes[randomInt(0, numberTypes.length - 1)];
+                    
+                    switch(type) {
+                        case 'integer':
+                            numbers.push(randomInt(1, 20).toString());
+                            break;
+                        case 'fraction':
+                            const fraction = randomFraction();
+                            numbers.push(`${fraction.numerator}/${fraction.denominator}`);
+                            break;
+                        case 'sqrt':
+                            numbers.push(randomSqrt());
+                            break;
+                    }
+                }
+                
+                // 生成运算符
+                const operators = ['+', '-', '×', '÷'];
+                let expression = numbers[0];
+                
+                for (let i = 1; i < numbers.length; i++) {
+                    const operator = operators[randomInt(0, operators.length - 1)];
+                    expression += ` ${operator} ${numbers[i]}`;
+                }
+                
+                // 随机添加括号
+                if (numCount > 2 && Math.random() > 0.5) {
+                    const openPos = randomInt(0, numCount - 2);
+                    const closePos = randomInt(openPos + 2, numCount);
+                    
+                    let parts = expression.split(' ');
+                    parts.splice(openPos * 2, 0, '(');
+                    parts.splice(closePos * 2 + 1, 0, ')');
+                    expression = parts.join(' ');
+                }
+                
+                // 确保表达式可以化简
+                if (!canSimplify(expression)) {
+                    // 如果无法化简，重新生成
+                    return generateExpression();
+                }
+                
+                return expression;
+            }
+            
+            // 计算表达式的值
+            function calculateExpression(expression) {
+                // 将表达式转换为math.js可识别的格式
+                let mathExpression = expression
+                    .replace(/×/g, '*')
+                    .replace(/÷/g, '/')
+                    .replace(/√(\d+)/g, 'sqrt($1)')
+                    .replace(/(\d+)\/(\d+)/g, '($1)/($2)')
+                    .replace(/\(([^)]+)\)²/g, '($1)^2');
+                
+                try {
+                    const result = math.evaluate(mathExpression);
+                    return result;
+                } catch (error) {
+                    console.error('计算错误:', error);
+                    return null;
+                }
+            }
+            
+            // 格式化答案
+            function formatAnswer(answer) {
+                if (math.isFraction(answer)) {
+                    return math.format(answer, { fraction: 'ratio' });
+                } else if (Number.isInteger(answer)) {
+                    return answer.toString();
+                } else {
+                    // 保留4位小数
+                    return math.format(answer, { precision: 4 });
+                }
+            }
+            
+            // 检查答案是否为最简形式
+            function isSimplestForm(answer, correctAnswer) {
+                // 检查分数是否最简
+                if (math.isFraction(correctAnswer)) {
+                    const fraction = math.fraction(correctAnswer);
+                    const gcd = math.gcd(fraction.n, fraction.d);
+                    return gcd === 1;
+                }
+                
+                // 检查根号是否最简
+                if (typeof answer === 'string' && answer.includes('√')) {
+                    // 这里可以添加根号最简形式的检查逻辑
+                    // 例如，√8应该简化为2√2
+                    return true; // 暂时返回true，实际应用中需要实现完整的根号化简检查
+                }
+                
+                return true;
+            }
+            
+            // 将表达式转换为显示格式
+            function formatExpressionForDisplay(expression) {
+                let display = expression;
+                
+                // 替换分数为图片
+                for (const [fraction, imgUrl] of Object.entries(fractionImages)) {
+                    display = display.replace(new RegExp(fraction, 'g'), 
+                        `<img src="${imgUrl}" class="math-img" alt="${fraction}">`);
+                }
+                
+                // 替换根号为图片
+                for (const [sqrt, imgUrl] of Object.entries(sqrtImages)) {
+                    display = display.replace(new RegExp(sqrt, 'g'), 
+                        `<img src="${imgUrl}" class="math-img" alt="${sqrt}">`);
+                }
+                
+                // 处理运算符
+                display = display.replace(/×/g, '×').replace(/÷/g, '÷');
+                
+                return display;
+            }
+            
+            // 生成新题目
+            function generateQuestion() {
+                let expression;
+                let result;
+                
+                // 确保生成的题目有有效结果
+                do {
+                    expression = generateExpression();
+                    result = calculateExpression(expression);
+                } while (result === null || !isFinite(result));
+                
+                currentQuestion = expression;
+                correctAnswer = result;
+                
+                // 显示题目，使用图片显示分数和根号
+                let displayQuestion = formatExpressionForDisplay(expression);
+                
+                questionElement.innerHTML = `${displayQuestion} = ?`;
+                answerDisplay.textContent = '';
+                userAnswer = '';
+                resultElement.style.display = 'none';
+                isFractionMode = false;
+                fractionParts = { numerator: '', denominator: '' };
+            }
+            
+            // 添加字符到答案
+            function addToAnswer(value) {
+                userAnswer += value;
+                updateAnswerDisplay();
+            }
+            
+            // 处理分数输入
+            function handleFraction() {
+                if (!isFractionMode) {
+                    isFractionMode = true;
+                    fractionParts = { numerator: userAnswer, denominator: '' };
+                    userAnswer += '/';
+                } else {
+                    // 如果已经在分数模式，添加分母
+                    userAnswer += '/';
+                }
+                updateAnswerDisplay();
+            }
+            
+            // 更新答案显示
+            function updateAnswerDisplay() {
+                answerDisplay.textContent = userAnswer;
+            }
+            
+            // 清空答案
+            function clearAnswer() {
+                userAnswer = '';
+                isFractionMode = false;
+                fractionParts = { numerator: '', denominator: '' };
+                updateAnswerDisplay();
+            }
+            
+            // 删除最后一个字符
+            function backspace() {
+                if (userAnswer.length > 0) {
+                    userAnswer = userAnswer.slice(0, -1);
+                    updateAnswerDisplay();
+                }
+            }
+            
+            // 检查答案
+            function checkAnswer() {
+                if (!currentQuestion) {
+                    alert('请先生成一个题目！');
+                    return;
+                }
+                
+                if (!userAnswer) {
+                    alert('请输入答案！');
+                    return;
+                }
+                
+                // 检查是否直接照抄原表达式
+                if (userAnswer === currentQuestion) {
+                    alert('不能直接照抄原表达式！');
+                    return;
+                }
+                
+                try {
+                    // 计算用户答案
+                    let userResult;
+                    
+                    // 处理用户输入的分数和根号
+                    const processedAnswer = userAnswer
+                        .replace(/(\d+)\/(\d+)/g, '($1)/($2)')
+                        .replace(/√(\d+)/g, 'sqrt($1)')
+                        .replace(/×/g, '*')
+                        .replace(/÷/g, '/');
+                    
+                    userResult = math.evaluate(processedAnswer);
+                    
+                    // 检查答案是否为最简形式
+                    if (!isSimplestForm(userAnswer, correctAnswer)) {
+                        alert('答案必须是最简形式！');
+                        return;
+                    }
+                    
+                    // 比较答案（允许一定的误差）
+                    const tolerance = 1e-10;
+                    const isCorrect = Math.abs(userResult - correctAnswer) < tolerance;
+                    
+                    // 更新统计
+                    totalQuestions++;
+                    if (isCorrect) {
+                        correctCount++;
+                        resultElement.textContent = '正确！';
+                        resultElement.className = 'result correct';
+                    } else {
+                        incorrectCount++;
+                        resultElement.textContent = `错误！正确答案是: ${formatAnswer(correctAnswer)}`;
+                        resultElement.className = 'result incorrect';
+                    }
+                    
+                    resultElement.style.display = 'block';
+                    updateStats();
+                    
+                } catch (error) {
+                    alert('无法解析您的答案，请检查输入格式！');
+                    console.error('解析错误:', error);
+                }
+            }
+            
+            // 更新统计信息
+            function updateStats() {
+                correctCountElement.textContent = correctCount;
+                incorrectCountElement.textContent = incorrectCount;
+                
+                const accuracy = totalQuestions > 0 ? (correctCount / totalQuestions * 100).toFixed(1) : 0;
+                accuracyElement.textContent = `${accuracy}%`;
+            }
+            
+            // 重置分数
+            function resetStats() {
+                correctCount = 0;
+                incorrectCount = 0;
+                totalQuestions = 0;
+                updateStats();
+                resultElement.style.display = 'none';
+            }
+            
+            // 事件监听
+            generateBtn.addEventListener('click', generateQuestion);
+            submitBtn.addEventListener('click', checkAnswer);
+            resetBtn.addEventListener('click', resetStats);
+            
+            // 输入按钮事件
+            inputButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    const action = this.dataset.action;
+                    
+                    if (value) {
+                        addToAnswer(value);
+                    } else if (action) {
+                        switch(action) {
+                            case 'clear':
+                                clearAnswer();
+                                break;
+                            case 'backspace':
+                                backspace();
+                                break;
+                            case 'fraction':
+                                handleFraction();
+                                break;
+                            case 'sqrt':
+                                addToAnswer('√');
+                                break;
+                            case 'parenthesis':
+                                addToAnswer(this.dataset.value);
+                                break;
+                        }
+                    }
+                });
+            });
+            
+            // 初始化
+            updateStats();
+        });
+    </script>
+</body>
+</html>
